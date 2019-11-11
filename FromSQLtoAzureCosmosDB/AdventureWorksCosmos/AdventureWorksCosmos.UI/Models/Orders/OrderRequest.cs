@@ -12,7 +12,7 @@ namespace AdventureWorksCosmos.UI.Models.Orders
         Approved = 2
     }
 
-    public class OrderRequest : AggregateBase
+    public class OrderRequest : DocumentBase
     {
         public List<LineItem> Items { get; set; }
 
@@ -30,7 +30,7 @@ namespace AdventureWorksCosmos.UI.Models.Orders
             Status = Status.Approved;
             foreach (var lineItem in Items)
             {
-                Publish(new ItemPurchased
+                Send(new ItemPurchased
                 {
                     ProductId = lineItem.ProductId,
                     Quantity = lineItem.Quantity,
@@ -40,7 +40,7 @@ namespace AdventureWorksCosmos.UI.Models.Orders
         }
     }
 
-    public class ItemPurchased : IDomainEvent
+    public class ItemPurchased : IDocumentMessage
     {
         public int ProductId { get; set; }
         public int Quantity { get; set; }
@@ -50,8 +50,8 @@ namespace AdventureWorksCosmos.UI.Models.Orders
     public class Customer
     {
         public string FirstName { get; set; }
-        public string MiddleName { get; set; }
         public string LastName { get; set; }
+        public string MiddleName { get; set; }
     }
 
     public class LineItem
